@@ -3,7 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - WFL
+  - WFR
+  - WBL
+  - WBR
+  - Point
+  - Point1
+  - Point2
+  - Point3
+  - Point4
+  - Point5
   layers:
   - Default
   - TransparentFX

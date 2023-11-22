@@ -8,6 +8,7 @@ using UnityEngine;
 public class CarController : MonoBehaviour
 {
     public InputMenager im;
+    public GameMenager gm;
     public List<WheelCollider> throttleWeels;
     public List<GameObject> steeringWeels;
     public List<GameObject> meshes;
@@ -21,18 +22,34 @@ public class CarController : MonoBehaviour
     {
         im = GetComponent<InputMenager>();
         rb = GetComponent<Rigidbody>();
-
+        gm = GetComponent<GameMenager>();
         if (CM)
         {
             //rb.centerOfMass = CM.position;
         }
-        
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == gm.actualPoint.tag)
+        {
+            
+            gm.PastPoint(other.gameObject);
+            return;
+
+        }
+            
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        foreach(WheelCollider wheel in throttleWeels)
+        if(Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + 10f, 0f);
+        }
+
+        foreach (WheelCollider wheel in throttleWeels)
         {
             wheel.motorTorque = strengthCoofficient * Time.deltaTime * im.throttles;
         }
@@ -42,16 +59,10 @@ public class CarController : MonoBehaviour
             Quaternion initialParentRotation = wheel.transform.parent.rotation;
             wheel.GetComponent<WheelCollider>().steerAngle = maxTurn * im.steer;
 
-            // Zapisz pierwotn¹ rotacjê obiektu nadrzêdnego na starcie
-            
-
-
-            // Oblicz now¹ rotacjê tylko dla osi Y, pozostawiaj¹c pozosta³e bez zmian
             Quaternion newRotation = Quaternion.Euler(0, im.steer * maxTurn, 0);
 
-            // Kombinuj now¹ rotacjê z pierwotn¹ rotacj¹ obiektu nadrzêdnego
+            
             wheel.transform.rotation = newRotation * initialParentRotation;
-            //wheel.transform.localEulerAngles = new Vector3(wheel.transform.localEulerAngles.x,im.steer * maxTurn, wheel.transform.localEulerAngles.z);
         }
 
         foreach (GameObject mesh in meshes)
@@ -68,7 +79,5 @@ public class CarController : MonoBehaviour
 
             
         }
-    }
-
-    
+    } 
 }
