@@ -53,6 +53,11 @@ public class GameMenager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
         if (gameStarted)
         {
             timer += Time.deltaTime;

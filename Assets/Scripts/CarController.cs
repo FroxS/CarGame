@@ -17,7 +17,6 @@ public class CarController : MonoBehaviour
     public float maxTurn = 20f;
     public Transform CM;
     public Rigidbody rb;
-    private float speed = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -89,12 +88,8 @@ public class CarController : MonoBehaviour
         if (gm.EngineAudio != null && gm.EngineAudio.isPlaying)
         {
 
-            //gm.EngineAudio.volume += im.throttles * speed * Time.deltaTime;
-            //Debug.LogWarning($"Test: {gm.EngineAudio.volume}");
-            //gm.EngineAudio.volume = Mathf.Clamp(gm.EngineAudio.volume, 0f, 1f);
             float rigidBodyMangintude = rb.velocity.magnitude;
             float pitch = mapValue(rigidBodyMangintude, 0f, 10f, 1f, 1.5f);
-            Debug.LogWarning($"Pith: {pitch}");
             gm.EngineAudio.pitch = pitch;
         }
 
